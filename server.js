@@ -25,6 +25,30 @@ mongoose.connection.on("open", () => {
 app.get("/", (req, res) => {
     res.send("hello from main page");
 })
+app.get("/profile", authenticateToken, (req, res) => {
+    res.send("logged in");
+})
+app.post("/userdata", authenticateToken, (req, res) => {
+    Users.findOneAndUpdate({ username: req.body.username }, {
+        $addToSet:
+        {
+            budget: {
+                budgetname: req.body.budgetname,
+                data: req.body.data,
+                envelopes: req.body.envelopes
+            }
+        }
+    },
+        { new: true }, // This line makes sure that the updated document is returned
+        (err, updatedDocument) => {
+            if (err) {
+                console.error(err);
+                res.status(500).send('Error: ' + err);
+            } else {
+                res.json(updatedDocument);
+            }
+        });
+});
 app.get("/users", (req, res) => {
     Users.find()
         .then((result) => {
@@ -48,7 +72,9 @@ app.post("/register", (req, res) => {
                 Users.create({
                     username: req.body.username,
                     password: generateHash(req.body.password),
-                    email: req.body.email
+                    email: req.body.email,
+                    envelopes: [],
+                    data: []
                 }).then((result) => {
                     if (result) res.json({ user: true });
                 }).catch((err) => {

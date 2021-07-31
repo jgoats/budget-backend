@@ -9,9 +9,14 @@ let userSchema = mongoose.Schema({
         type: String,
         required: true
     },
-    email: {
-        type: String,
-    }
+    budget: {
+        type: Object,
+        budgetname: {
+            type: String
+        },
+        data: [{ type: Number }],
+        envelopes: [{ type: String }]
+    },
 })
 
 let Users = mongoose.model("Users", userSchema, "budgetUsers");
