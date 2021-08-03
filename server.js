@@ -28,6 +28,19 @@ app.get("/", (req, res) => {
 app.get("/profile", authenticateToken, (req, res) => {
     res.send("logged in");
 })
+app.get("/budgets/:Username", authenticateToken, (req, res) => {
+    let user = req.params.Username;
+    console.log(user);
+    Users.findOne({ username: req.params.Username }, function (err, obj) {
+        if (err) {
+            res.send(err);
+        }
+        else {
+            res.send({ obj })
+        }
+    })
+
+})
 app.post("/userdata", authenticateToken, (req, res) => {
     Users.findOneAndUpdate({ username: req.body.username }, {
         $addToSet:
@@ -37,6 +50,23 @@ app.post("/userdata", authenticateToken, (req, res) => {
                 data: req.body.data,
                 envelopes: req.body.envelopes
             }
+        }
+    },
+        { new: true }, // This line makes sure that the updated document is returned
+        (err, updatedDocument) => {
+            if (err) {
+                console.error(err);
+                res.status(500).send('Error: ' + err);
+            } else {
+                res.json(updatedDocument);
+            }
+        });
+});
+app.post("/deleteuserdata", authenticateToken, (req, res) => {
+    Users.findOneAndUpdate({ username: req.body.username }, {
+        $pull:
+        {
+            budget: req.body.budget[req.body.index]
         }
     },
         { new: true }, // This line makes sure that the updated document is returned
