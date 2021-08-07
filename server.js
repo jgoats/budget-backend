@@ -6,14 +6,13 @@ let cors = require("cors");
 let Models = require("./mongoose/users.js");
 let bcrypt = require("bcrypt");
 let Users = Models.Users;
-require("dotenv").config();
 let port = process.env.PORT || 250;
 let connected = process.env.CONNECTION_STRING;
 let secret = process.env.SECRET;
 
 app.use(express.json());
 app.use(cors({
-    origin: "http://localhost:3000",
+    origin: "https://justinssoftware.com/Budget/",
     credentials: true
 }));
 mongoose.connect(connected, { useNewUrlParser: true, useUnifiedTopology: true });
