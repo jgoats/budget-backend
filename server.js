@@ -12,7 +12,7 @@ let secret = process.env.SECRET;
 
 app.use(express.json());
 app.use(cors({
-    origin: "https://justinssoftware.com/Budget/",
+    origin: "https://justinssoftware.com",
     credentials: true
 }));
 mongoose.connect(connected, { useNewUrlParser: true, useUnifiedTopology: true });
