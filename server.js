@@ -137,7 +137,7 @@ app.post("/login", (req, res) => {
             if (err) res.json({ error: err });
         })
 })
-app.get("/*", function (res, res) {
+app.get("/Budget/viewbudgets", function (res, res) {
     res.redirect("https://justinssoftware.com/Budget");
 })
 app.listen(port, (err) => {
